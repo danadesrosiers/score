@@ -12,7 +12,7 @@ import java.io.File
 
 fun main(args: Array<String>) {
     BasicConfigurator.configure()
-    val dir = File("target/db")
+    val dir = File("db/db")
     Database.connect("jdbc:h2:file:${dir.canonicalFile.absolutePath}", driver = "org.h2.Driver")
     val athleteService = AthleteService()
     athleteService.init()

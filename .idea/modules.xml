@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/score.iml" filepath="$PROJECT_DIR$/.idea/modules/score.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/score_main.iml" filepath="$PROJECT_DIR$/.idea/modules/score_main.iml" group="score" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/score_test.iml" filepath="$PROJECT_DIR$/.idea/modules/score_test.iml" group="score" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/score_web/score_web.iml" filepath="$PROJECT_DIR$/.idea/modules/score_web/score_web.iml" group="score_web" />
     </modules>
   </component>
 </project>
