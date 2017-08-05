@@ -17,25 +17,21 @@ apply plugin: 'kotlin'
 repositories {
     jcenter()
     mavenCentral()
-    maven { url "https://dl.bintray.com/kotlin/kotlinx" }
     maven { url  "http://dl.bintray.com/kotlin/ktor" }
     maven { url  "http://dl.bintray.com/kotlin/exposed" }
-    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     def kotlin_ktor_version = "0.3.2"
-    def kotlinx_html_version = "0.6.3"
     def kotlin_exposed_verison = "0.8"
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile "org.jetbrains.ktor:ktor-core:$kotlin_ktor_version"
     compile "org.jetbrains.ktor:ktor-netty:$kotlin_ktor_version"
-    compile "org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinx_html_version"
     compile "org.jetbrains.exposed:exposed:$kotlin_exposed_verison"
     compile "org.slf4j:slf4j-log4j12:1.7.5"
     compile "com.h2database:h2:[1.4.191,1.5)"
-    compile 'com.github.orangy:kotlinx.css:fbca036da4'
+    compile 'com.squareup.moshi:moshi:1.5.0'
 }
 
 kotlin {
