@@ -4,16 +4,12 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import org.dana.score.model.Athlete
 import org.dana.score.model.AthleteService
-import org.dana.score.model.toAthlete
 import org.jetbrains.ktor.application.call
-import org.jetbrains.ktor.application.receive
 import org.jetbrains.ktor.http.ContentType
 import org.jetbrains.ktor.http.HttpHeaders
 import org.jetbrains.ktor.http.HttpStatusCode
-import org.jetbrains.ktor.response.respondRedirect
 import org.jetbrains.ktor.response.respondText
 import org.jetbrains.ktor.routing.*
-import org.jetbrains.ktor.util.ValuesMap
 
 fun Route.athlete(athleteService: AthleteService, moshi: Moshi) {
     route("/athlete") {
@@ -31,13 +27,14 @@ fun Route.athlete(athleteService: AthleteService, moshi: Moshi) {
             call.respondText(athleteSerializer.toJson(athlete), ContentType.Application.Json)
         }
         post("/") {
-            athleteService.createAthlete(call.request.receive<ValuesMap>().toAthlete())
-            call.respondRedirect("/athlete")
+            val athleteSerializer = moshi.adapter(Athlete::class.java)
+            val id = athleteSerializer.fromJson(call.request.receive(String::class))?.let { athleteService.createAthlete(it) }
+            call.response.headers.append(HttpHeaders.Location, "/athlete/$id")
+            call.respond(HttpStatusCode.SeeOther)
         }
         delete("/{id}") {
             athleteService.deleteAthlete(call.parameters["id"]!!.toInt())
-            call.response.headers.append(HttpHeaders.Location, "/athlete")
-            call.respond(HttpStatusCode.SeeOther)
+            call.respond(HttpStatusCode.OK)
         }
     }
 }

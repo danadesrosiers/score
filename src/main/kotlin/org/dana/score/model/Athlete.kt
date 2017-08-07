@@ -3,7 +3,6 @@ package org.dana.score.model
 import org.jetbrains.exposed.dao.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.ktor.util.ValuesMap
 
 class AthleteService {
     fun init () {
@@ -34,7 +33,7 @@ class AthleteService {
     }
 
     fun createAthlete(athlete: Athlete) = transaction {
-        Athletes.insert {
+        Athletes.insertAndGetId {
             it[name] = athlete.name
             it[club] = athlete.club
             it[level] = athlete.level
@@ -58,8 +57,3 @@ object Athletes : IntIdTable() {
 }
 
 data class Athlete (val name: String, val club: String, val level: Int, val id: Int? = null)
-
-fun ValuesMap.toAthlete() = Athlete(this[Athletes.name.name]!!,
-                                    this[Athletes.club.name]!!,
-                                    this[Athletes.level.name]!!.toInt(),
-                                    this[Athletes.id.name]!!.toInt())

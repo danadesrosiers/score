@@ -7,6 +7,7 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.ktor.application.install
 import org.jetbrains.ktor.features.CORS
 import org.jetbrains.ktor.host.embeddedServer
+import org.jetbrains.ktor.http.HttpMethod
 import org.jetbrains.ktor.netty.Netty
 import org.jetbrains.ktor.routing.Routing
 import java.io.File
@@ -22,6 +23,8 @@ fun main(args: Array<String>) {
     val server = embeddedServer(Netty, 8080) {
         install(CORS) {
             anyHost()
+            method(HttpMethod.Delete)
+            method(HttpMethod.Put)
         }
         install(Routing) {
             athlete(athleteService, moshi)
