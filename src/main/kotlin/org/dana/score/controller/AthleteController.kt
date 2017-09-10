@@ -18,7 +18,7 @@ fun Route.athlete(athleteService: AthleteService, moshi: Moshi) {
             val athletes = athleteService.getAllAthletes()
             val type = Types.newParameterizedType(List::class.java, Athlete::class.java)
             val athleteListSerializer = moshi.adapter<List<Athlete>>(type)
-            call.respondText(athleteListSerializer.toJson(athletes), ContentType.Text.Html)
+            call.respondText(athleteListSerializer.toJson(athletes), ContentType.Application.Json)
         }
         get("/{id}") {
             // athlete detail
@@ -26,14 +26,24 @@ fun Route.athlete(athleteService: AthleteService, moshi: Moshi) {
             val athleteSerializer = moshi.adapter(Athlete::class.java)
             call.respondText(athleteSerializer.toJson(athlete), ContentType.Application.Json)
         }
+        put("/{id}") {
+            val athleteSerializer = moshi.adapter(Athlete::class.java)
+            val id = athleteSerializer.fromJson(call.request.receive(String::class))?.let {
+                athleteService.editAthlete(it)
+            }
+            call.response.headers.append(HttpHeaders.Location, "/athlete/$id")
+            call.respond(HttpStatusCode.SeeOther)
+        }
         post("/") {
             val athleteSerializer = moshi.adapter(Athlete::class.java)
-            val id = athleteSerializer.fromJson(call.request.receive(String::class))?.let { athleteService.createAthlete(it) }
+            val id = athleteSerializer.fromJson(call.request.receive(String::class))?.let {
+                athleteService.createAthlete(it)
+            }
             call.response.headers.append(HttpHeaders.Location, "/athlete/$id")
             call.respond(HttpStatusCode.SeeOther)
         }
         delete("/{id}") {
-            athleteService.deleteAthlete(call.parameters["id"]!!.toInt())
+            call.parameters["id"]?.toInt()?.let { athleteService.deleteAthlete(it) }
             call.respond(HttpStatusCode.OK)
         }
     }

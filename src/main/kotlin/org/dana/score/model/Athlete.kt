@@ -43,6 +43,14 @@ class AthleteService {
     fun deleteAthlete(id: Int) = transaction {
         Athletes.deleteWhere { Athletes.id eq id }
     }
+
+    fun editAthlete(athlete: Athlete) = transaction {
+        Athletes.update({ Athletes.id eq athlete.id }) {
+            it[name] = athlete.name
+            it[club] = athlete.club
+            it[level] = athlete.level
+        }
+    }
 }
 
 fun ResultRow.toAthlete() = Athlete(this[Athletes.name],
